@@ -160,6 +160,11 @@
     - name: sync xamarin tools from the provisioning repo
       synchronize: src=xamarin/ dest="/Users/{{ param_user }}/bitrise/xamarin/"
 
+    # Auto-update Visual Studio for Mac
+    - name: auto-update VS4Mac
+      shell: ./xamarin/scripts/vs4mac-autoupdate/vs4mac_update.sh
+      become: true
+
     # Final debug prints
     - debug: msg="---> Finished with automatic stuff - but here's some things you have to do manually:"
     - debug: msg=" (!) After you finished with the preparations RESTART the machine!"
