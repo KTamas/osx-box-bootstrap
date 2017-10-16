@@ -161,8 +161,16 @@
       synchronize: src=xamarin/ dest="/Users/{{ param_user }}/bitrise/xamarin/"
 
     # Auto-update Visual Studio for Mac
+    - name: create tmp folder for update scripts
+      file: path="/tmp/vs4mac-autoupdate"
+        state=directory
+
+    - name: copy update scripts
+      copy: src=xamarin/scripts/vs4mac-autoupdate/
+        dest="/tmp/vs4mac-autoupdate"
+        
     - name: auto-update VS4Mac
-      shell: ./xamarin/scripts/vs4mac-autoupdate/vs4mac_update.sh
+      shell: bash /tmp/vs4mac-autoupdate/vs4mac_update.sh
       become: true
 
     # Final debug prints
