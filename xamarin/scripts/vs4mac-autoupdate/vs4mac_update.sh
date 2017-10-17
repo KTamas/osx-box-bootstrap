@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TEMPDOWNLOAD=/Users/KTamas/Library/Caches/VisualStudio/7.0/TempDownload
+TEMPDOWNLOAD=/Users/vagrant/Library/Caches/VisualStudio/7.0/TempDownload
 MYPWD=$(pwd)
 
 count_files () {
@@ -88,14 +88,22 @@ install_updates () {
 
 clean_tempdownload () {
     cd $TEMPDOWNLOAD
-    echo "Removing all files from $TEMPDOWNLOAD..."
-    yes | rm *
+    if [ $? != 0 ]; then
+        echo "There is no temp directory yet."
+    else
+        echo "Removing all files from $TEMPDOWNLOAD..."
+        yes | rm *
+    fi
 }
 
 download_updates () {
     echo "Running the downloader applescript..."
-    cd $MYPWD
-    osascript download_updates.scpt
+    cd $MYPWD    
+    sudo -H -u vagrant bash -c 'osascript download_updates.applescript'
+    if [ $? != 0 ]; then
+        echo "The applescript has failed. Exiting."
+        exit 1
+    fi
     cd $TEMPDOWNLOAD
 }
 
